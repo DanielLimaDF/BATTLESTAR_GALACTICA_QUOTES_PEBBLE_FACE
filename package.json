@@ -1,0 +1,29 @@
+{
+    "author": "DanielLimaDF",
+    "dependencies": {},
+    "keywords": [],
+    "name": "bsg-quotes",
+    "pebble": {
+        "capabilities": [
+            ""
+        ],
+        "displayName": "Battlestar Galactica Quotes",
+        "enableMultiJS": false,
+        "messageKeys": [],
+        "projectType": "native",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk"
+        ],
+        "uuid": "2c583182-dcfc-450c-81b1-f753acd8be82",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.0.0"
+}
