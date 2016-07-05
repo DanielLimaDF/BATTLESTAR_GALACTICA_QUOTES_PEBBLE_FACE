@@ -5,14 +5,78 @@
     "name": "bsg-quotes",
     "pebble": {
         "capabilities": [
-            ""
+            "configurable",
+            "health"
         ],
         "displayName": "Battlestar Galactica Quotes",
         "enableMultiJS": false,
         "messageKeys": [],
         "projectType": "native",
         "resources": {
-            "media": []
+            "media": [
+                {
+                    "file": "images/feet",
+                    "name": "FEET_ICON",
+                    "targetPlatforms": [
+                        "basalt",
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/bat2_cl",
+                    "name": "BAT2_ICON",
+                    "targetPlatforms": [
+                        "basalt",
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/bat1_cl",
+                    "name": "BAT1_ICON",
+                    "targetPlatforms": [
+                        "basalt",
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/bat2_pb",
+                    "name": "BAT2_ICON",
+                    "targetPlatforms": [
+                        "aplite"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/bat1_pb",
+                    "name": "BAT1_ICON",
+                    "targetPlatforms": [
+                        "aplite"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "characterRegex": "[0-9]",
+                    "file": "fonts/bsgFont2",
+                    "name": "BSG_FONT_47",
+                    "targetPlatforms": [
+                        "aplite",
+                        "basalt"
+                    ],
+                    "type": "font"
+                },
+                {
+                    "characterRegex": "[0-9]",
+                    "file": "fonts/bsgFont1",
+                    "name": "BSG_FONT_45",
+                    "targetPlatforms": [
+                        "chalk"
+                    ],
+                    "type": "font"
+                }
+            ]
         },
         "sdkVersion": "3",
         "targetPlatforms": [
