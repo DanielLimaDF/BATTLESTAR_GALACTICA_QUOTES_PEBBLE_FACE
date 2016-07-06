@@ -30,6 +30,14 @@
                     "type": "bitmap"
                 },
                 {
+                    "file": "images/bat2_pb",
+                    "name": "BAT2_ICON",
+                    "targetPlatforms": [
+                        "aplite"
+                    ],
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/bat2_cl",
                     "name": "BAT2_ICON",
                     "targetPlatforms": [
@@ -39,27 +47,19 @@
                     "type": "bitmap"
                 },
                 {
+                    "file": "images/bat1_pb",
+                    "name": "BAT1_ICON",
+                    "targetPlatforms": [
+                        "aplite"
+                    ],
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/bat1_cl",
                     "name": "BAT1_ICON",
                     "targetPlatforms": [
                         "basalt",
                         "chalk"
-                    ],
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/bat2_pb",
-                    "name": "BAT2_ICON",
-                    "targetPlatforms": [
-                        "aplite"
-                    ],
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/bat1_pb",
-                    "name": "BAT1_ICON",
-                    "targetPlatforms": [
-                        "aplite"
                     ],
                     "type": "bitmap"
                 },
