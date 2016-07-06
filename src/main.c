@@ -270,19 +270,31 @@ static void update_time() {
   text_layer_set_text(time1Text_layer, H_buffer);
   text_layer_set_text(time2Text_layer, M_buffer);
   
-  //date
-  static char day_buffer[6];
-  static char month_buffer[6];
-  static char weekDay_buffer[6];
   
-  strftime(day_buffer, sizeof(day_buffer), "%d", tick_time);
-  strftime(month_buffer, sizeof(month_buffer), "%b", tick_time);
-  strftime(weekDay_buffer, sizeof(weekDay_buffer), "%a", tick_time);
   
-  // Show date
-  text_layer_set_text(weekDayText_layer, weekDay_buffer);
-  text_layer_set_text(dayText_layer, day_buffer);
-  text_layer_set_text(monthText_layer, month_buffer);
+  if(settings.displayDate){
+    
+    //date
+    static char day_buffer[6];
+    static char month_buffer[6];
+    static char weekDay_buffer[6];
+    
+    strftime(day_buffer, sizeof(day_buffer), "%d", tick_time);
+    strftime(month_buffer, sizeof(month_buffer), "%b", tick_time);
+    strftime(weekDay_buffer, sizeof(weekDay_buffer), "%a", tick_time);
+    
+    // Show date
+    text_layer_set_text(weekDayText_layer, weekDay_buffer);
+    text_layer_set_text(dayText_layer, day_buffer);
+    text_layer_set_text(monthText_layer, month_buffer);
+    
+  }else{
+    
+    text_layer_set_text(weekDayText_layer, "");
+    text_layer_set_text(dayText_layer, "");
+    text_layer_set_text(monthText_layer, "");
+    
+  }
   
   //show new quote
   update_bsg_quotes();
@@ -348,6 +360,18 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
     layer_set_hidden(bitmap_layer_get_layer(feetBitmapBackgroundLayer),false);
     layer_set_hidden(text_layer_get_layer(stepsText_layer),false);
   }
+  
+  
+  
+  //show or hide date bars
+  if(settings.displayDate){
+    layer_set_hidden(text_layer_get_layer(rectDate1_layer ),false);
+    layer_set_hidden(text_layer_get_layer(rectDate2_layer ),false);
+  }else{
+    layer_set_hidden(text_layer_get_layer(rectDate1_layer ),true);
+    layer_set_hidden(text_layer_get_layer(rectDate2_layer ),true);
+  }
+  
   
   // Save the new settings to persistent storage
   prv_save_settings();
