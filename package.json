@@ -11,7 +11,7 @@
             "health"
         ],
         "displayName": "Battlestar Galactica Quotes",
-        "enableMultiJS": false,
+        "enableMultiJS": true,
         "messageKeys": [
             "showSteps",
             "showBattery",
