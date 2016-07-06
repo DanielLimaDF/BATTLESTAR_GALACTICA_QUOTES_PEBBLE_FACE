@@ -1,6 +1,8 @@
 {
     "author": "DanielLimaDF",
-    "dependencies": {},
+    "dependencies": {
+        "pebble-clay": "^1.0.1"
+    },
     "keywords": [],
     "name": "bsg-quotes",
     "pebble": {
@@ -10,7 +12,11 @@
         ],
         "displayName": "Battlestar Galactica Quotes",
         "enableMultiJS": false,
-        "messageKeys": [],
+        "messageKeys": [
+            "showSteps",
+            "showBattery",
+            "showDate"
+        ],
         "projectType": "native",
         "resources": {
             "media": [

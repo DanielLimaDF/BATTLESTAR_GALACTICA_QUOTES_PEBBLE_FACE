@@ -2,6 +2,8 @@
 #include <pebble.h>
 #include <math.h>
 
+#define SETTINGS_KEY 1
+
 Window *my_window;
 
 //Text Layers
@@ -33,6 +35,16 @@ static GBitmap *feetBitmapLayer;
 //Fonts
 static GFont bsg_font;
 
+//Complications booleans struct
+// A structure containing settings
+typedef struct ClaySettings {
+  bool displayBattery;
+  bool displayDate;
+  bool displaySteps;
+} __attribute__((__packed__)) ClaySettings;
+
+ClaySettings settings;
+
 //Other vars
 char stepsStatus[20];
 char batteryStatus[5];
@@ -41,79 +53,91 @@ int batteryStatusBarSize;
 char currentQuoteText[60];
 int currentQuote = 1;
 
-
-
 //Update quotes
 static void update_bsg_quotes(){
-  
-  //test only
-  currentQuote = 1;
   
   switch (currentQuote){
     case 1:
       snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_14,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_14, FONT_KEY_GOTHIC_14))));
     break;
     case 2:
       snprintf(currentQuoteText,60, "Pilots call me STARBUCK You may refer to me as GOD");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_14,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_14, FONT_KEY_GOTHIC_14))));
     break;
     case 3:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "GAIUS FRAKKIN BALTAR!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18, FONT_KEY_GOTHIC_18))));
     break;
     case 4:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "We’re the children of humanity");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_14, FONT_KEY_GOTHIC_18))));
     break;
     case 5:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "Sometimes, you have to roll a hard six");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_14,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_14, FONT_KEY_GOTHIC_14))));
     break;
     case 6:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "Frakkin Toasters!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 7:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "By your command!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 8:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "FTL OFFLINE!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 9:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "FRAK!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 10:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "GAIUS BALTAR?");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 11:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "...as of this moment, we are at war!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_14,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_14, FONT_KEY_GOTHIC_14))));
     break;
     case 12:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "SO SAY WE ALL!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 13:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "Action stations!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 14:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "Launch the alert vipers!");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 15:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "God has a plan, Gaius.");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 16:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "What the frak?");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 17:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "“Nothing but the rain.” – Starbuck");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_14,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_14, FONT_KEY_GOTHIC_14))));
     break;
     case 18:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "They have a plan");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18_BOLD,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18_BOLD, FONT_KEY_GOTHIC_18_BOLD))));
     break;
     case 19:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "I want to see gamma rays");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_18,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_18, FONT_KEY_GOTHIC_18))));
     break;
     case 20:
-      snprintf(currentQuoteText,60, "This Pebble device wish to know more about the Cylons");
+      snprintf(currentQuoteText,60, "All of this has happened before...");
+      text_layer_set_font(quotesText_layer, fonts_get_system_font(PBL_IF_BW_ELSE(FONT_KEY_GOTHIC_14,PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_14, FONT_KEY_GOTHIC_14))));
     break;
   }
-  
-  
-  
   
   text_layer_set_text(quotesText_layer, currentQuoteText);
   
@@ -125,26 +149,41 @@ static void update_bsg_quotes(){
   
 }
 
-
 //Steps count update
 
 static void health_handler(HealthEventType event, void *context) {
   
-  HealthMetric metric = HealthMetricStepCount;
-  time_t start = time_start_of_today();
-  time_t end = time(NULL);
+  if(settings.displaySteps){
   
-  int totalSteps;
-  
-  HealthServiceAccessibilityMask mask = health_service_metric_accessible(metric, 
-  start, end);
-  
-  if(mask & HealthServiceAccessibilityMaskAvailable) {
+    HealthMetric metric = HealthMetricStepCount;
+    time_t start = time_start_of_today();
+    time_t end = time(NULL);
     
-    totalSteps = (int)health_service_sum_today(metric);
+    int totalSteps;
     
-    snprintf(stepsStatus,20, "%d", totalSteps);
-    text_layer_set_text(stepsText_layer, stepsStatus);
+    HealthServiceAccessibilityMask mask = health_service_metric_accessible(metric, 
+    start, end);
+    
+    if(mask & HealthServiceAccessibilityMaskAvailable) {
+      
+      totalSteps = (int)health_service_sum_today(metric);
+      
+      snprintf(stepsStatus,20, "%d", totalSteps);
+      
+      text_layer_set_text(stepsText_layer, stepsStatus);
+      
+      //Test only
+      //text_layer_set_text(stepsText_layer, "999999");
+      
+    }
+    
+    layer_set_hidden(bitmap_layer_get_layer(feetBitmapBackgroundLayer),false);
+    layer_set_hidden(text_layer_get_layer(stepsText_layer),false);
+    
+  }else{
+    
+    layer_set_hidden(bitmap_layer_get_layer(feetBitmapBackgroundLayer),true);
+    layer_set_hidden(text_layer_get_layer(stepsText_layer),true);
     
   }
   
@@ -153,42 +192,53 @@ static void health_handler(HealthEventType event, void *context) {
 //Battery update
 static void updateBattery() {
   
-  //Battery status
-  BatteryChargeState state = battery_state_service_peek();
-  int statusValue = (int)state.charge_percent;
-  snprintf(batteryStatus,5, "%d%%", statusValue);
-  text_layer_set_text(batteryText_layer, batteryStatus);
+  if(settings.displayBattery){
   
-  batteryBarCalculation = statusValue*19;
-  batteryBarCalculation = batteryBarCalculation/100;
-  
-  batteryStatusBarSize = roundf(batteryBarCalculation);
-  
-  //Change size
-  text_layer_set_size(rectBatteryStatus_layer, GSize(batteryStatusBarSize,5));
-  
-  if(statusValue <= 20){
-    text_layer_set_background_color(rectBatteryStatus_layer, PBL_IF_COLOR_ELSE(GColorOrange,GColorLightGray));
-  }else{
-    text_layer_set_background_color(rectBatteryStatus_layer, PBL_IF_COLOR_ELSE(GColorYellow,GColorBlack));
-  }
-  
-  //Check if battery is charging
-  if(state.is_charging){
-    //Hide normal battery icon and show charging battery bitmap
+    //Battery status
+    BatteryChargeState state = battery_state_service_peek();
+    int statusValue = (int)state.charge_percent;
+    snprintf(batteryStatus,5, "%d%%", statusValue);
+    text_layer_set_text(batteryText_layer, batteryStatus);
     
+    batteryBarCalculation = statusValue*19;
+    batteryBarCalculation = batteryBarCalculation/100;
+    
+    batteryStatusBarSize = roundf(batteryBarCalculation);
+    
+    //Change size
+    text_layer_set_size(rectBatteryStatus_layer, GSize(batteryStatusBarSize,5));
+    
+    if(statusValue <= 20){
+      text_layer_set_background_color(rectBatteryStatus_layer, PBL_IF_COLOR_ELSE(GColorOrange,GColorLightGray));
+    }else{
+      text_layer_set_background_color(rectBatteryStatus_layer, PBL_IF_COLOR_ELSE(GColorYellow,GColorBlack));
+    }
+    
+    //Check if battery is charging
+    if(state.is_charging){
+      //Hide normal battery icon and show charging battery bitmap
+      
+      layer_set_hidden(bitmap_layer_get_layer(normalBatteryBitmapBackgroundLayer),true);
+      layer_set_hidden(bitmap_layer_get_layer(chargingBatteryBitmapBackgroundLayer),false);
+      layer_set_hidden(text_layer_get_layer(rectBatteryStatus_layer),true);
+      layer_set_hidden(text_layer_get_layer(batteryText_layer),true);
+      
+    }else{
+      //You know...
+      
+      layer_set_hidden(bitmap_layer_get_layer(normalBatteryBitmapBackgroundLayer),false);
+      layer_set_hidden(bitmap_layer_get_layer(chargingBatteryBitmapBackgroundLayer),true);
+      layer_set_hidden(text_layer_get_layer(rectBatteryStatus_layer),false);
+      layer_set_hidden(text_layer_get_layer(batteryText_layer),false);
+      
+    }
+    
+  }else{
+    //hide elements
     layer_set_hidden(bitmap_layer_get_layer(normalBatteryBitmapBackgroundLayer),true);
-    layer_set_hidden(bitmap_layer_get_layer(chargingBatteryBitmapBackgroundLayer),false);
+    layer_set_hidden(bitmap_layer_get_layer(chargingBatteryBitmapBackgroundLayer),true);
     layer_set_hidden(text_layer_get_layer(rectBatteryStatus_layer),true);
     layer_set_hidden(text_layer_get_layer(batteryText_layer),true);
-    
-  }else{
-    //You know...
-    
-    layer_set_hidden(bitmap_layer_get_layer(normalBatteryBitmapBackgroundLayer),false);
-    layer_set_hidden(bitmap_layer_get_layer(chargingBatteryBitmapBackgroundLayer),true);
-    layer_set_hidden(text_layer_get_layer(rectBatteryStatus_layer),false);
-    layer_set_hidden(text_layer_get_layer(batteryText_layer),false);
     
   }
   
@@ -248,6 +298,71 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 
 
+//Clay settings
+
+static void prv_default_settings() {
+  settings.displayBattery = true;
+  settings.displayDate = true;
+  settings.displaySteps = true;
+}
+
+// Read settings from persistent storage
+static void prv_load_settings() {
+  // Load the default settings
+  prv_default_settings();
+  // Read settings from persistent storage, if they exist
+  persist_read_data(SETTINGS_KEY, &settings, sizeof(settings));
+}
+
+// Save the settings to persistent storage
+static void prv_save_settings() {
+  persist_write_data(SETTINGS_KEY, &settings, sizeof(settings));
+}
+
+
+static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) {
+  
+  // Read boolean preferences
+  Tuple *toggleBattery = dict_find(iter, MESSAGE_KEY_showBattery);
+  if(toggleBattery) {
+    settings.displayBattery = toggleBattery->value->int32 == 1;
+  }
+  
+  Tuple *toggleDate = dict_find(iter, MESSAGE_KEY_showDate);
+  if(toggleDate) {
+    settings.displayDate = toggleDate->value->int32 == 1;
+  }
+  
+  Tuple *toggleSteps = dict_find(iter, MESSAGE_KEY_showSteps);
+  if(toggleSteps) {
+    settings.displaySteps = toggleSteps->value->int32 == 1;
+  }
+  
+  updateBattery();
+  update_time();
+  
+  if(!settings.displaySteps){
+    layer_set_hidden(bitmap_layer_get_layer(feetBitmapBackgroundLayer),true);
+    layer_set_hidden(text_layer_get_layer(stepsText_layer),true);
+  }else{
+    layer_set_hidden(bitmap_layer_get_layer(feetBitmapBackgroundLayer),false);
+    layer_set_hidden(text_layer_get_layer(stepsText_layer),false);
+  }
+  
+  // Save the new settings to persistent storage
+  prv_save_settings();
+  
+}
+
+void prv_init(void) {
+  
+  //Load default or stored settings
+  prv_load_settings();
+  
+  // Open AppMessage connection
+  app_message_register_inbox_received(prv_inbox_received_handler);
+  app_message_open(128, 128);
+}
 
 
 
@@ -368,11 +483,10 @@ void handle_init(void) {
   #if defined(PBL_COLOR)
     time1Text_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(15, 7), PBL_IF_ROUND_ELSE(99, 108), PBL_IF_ROUND_ELSE(47, 58)));
     time2Text_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(66, 64), PBL_IF_ROUND_ELSE(99, 108), PBL_IF_ROUND_ELSE(47, 58)));
-    quotesText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(122, 122), PBL_IF_ROUND_ELSE(98, 108), 43));
+    quotesText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(120, 122), PBL_IF_ROUND_ELSE(98, 108), 43));
     batteryText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(138, 112), PBL_IF_ROUND_ELSE(61, 18), 32, 15));
     stepsText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(0, 112), PBL_IF_ROUND_ELSE(89, 75), 32, 19));
     
-  
     weekDayText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(135, 112), PBL_IF_ROUND_ELSE(81, 104), PBL_IF_ROUND_ELSE(30, 32), 22));
     dayText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(135, 112), PBL_IF_ROUND_ELSE(101, 124), PBL_IF_ROUND_ELSE(30, 32), 22));
     monthText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(135, 112), PBL_IF_ROUND_ELSE(120, 144), PBL_IF_ROUND_ELSE(30, 32), 22));
@@ -407,7 +521,8 @@ void handle_init(void) {
     
     text_layer_set_text_alignment(time1Text_layer, GTextAlignmentCenter);
     text_layer_set_text_alignment(time2Text_layer, GTextAlignmentCenter);
-    text_layer_set_text_alignment(quotesText_layer, PBL_IF_ROUND_ELSE(GTextAlignmentRight, GTextAlignmentCenter));
+    //text_layer_set_text_alignment(quotesText_layer, PBL_IF_ROUND_ELSE(GTextAlignmentRight, GTextAlignmentCenter));
+    text_layer_set_text_alignment(quotesText_layer, GTextAlignmentCenter);
     text_layer_set_text_alignment(batteryText_layer, GTextAlignmentCenter);
     text_layer_set_text_alignment(stepsText_layer, GTextAlignmentCenter);
     text_layer_set_text_alignment(weekDayText_layer, GTextAlignmentCenter);
@@ -492,7 +607,7 @@ void handle_init(void) {
     if(health_service_events_subscribe(health_handler, NULL)) {
       
       //Test only
-      //text_layer_set_text(stepsCountTextLayer, "4242");
+      //text_layer_set_text(stepsText_layer, "9999");
   
     }
       
@@ -544,6 +659,7 @@ void handle_deinit(void) {
 }
 
 int main(void) {
+  prv_init();
   handle_init();
   app_event_loop();
   handle_deinit();
