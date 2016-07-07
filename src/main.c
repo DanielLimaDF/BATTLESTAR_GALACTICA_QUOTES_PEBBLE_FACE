@@ -187,6 +187,7 @@ static void health_handler(HealthEventType event, void *context) {
     
   }
   
+  
 }
 
 //Battery update
@@ -298,6 +299,7 @@ static void update_time() {
   
   //show new quote
   update_bsg_quotes();
+  
   
 }
 
@@ -507,7 +509,7 @@ void handle_init(void) {
   #if defined(PBL_COLOR)
     time1Text_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(15, 7), PBL_IF_ROUND_ELSE(99, 108), PBL_IF_ROUND_ELSE(47, 58)));
     time2Text_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(66, 64), PBL_IF_ROUND_ELSE(99, 108), PBL_IF_ROUND_ELSE(47, 58)));
-    quotesText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(120, 122), PBL_IF_ROUND_ELSE(98, 108), 43));
+    quotesText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(32, 0), PBL_IF_ROUND_ELSE(120, 122), PBL_IF_ROUND_ELSE(98, 108), PBL_IF_ROUND_ELSE(80, 43)));
     batteryText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(138, 112), PBL_IF_ROUND_ELSE(61, 18), 32, 15));
     stepsText_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(0, 112), PBL_IF_ROUND_ELSE(89, 75), 32, 19));
     
@@ -668,9 +670,6 @@ void handle_deinit(void) {
   bitmap_layer_destroy(chargingBatteryBitmapBackgroundLayer);
   bitmap_layer_destroy(feetBitmapBackgroundLayer);
   
-  //Deinit window
-  window_destroy(my_window);
-  
   //Deinit fonts
   fonts_unload_custom_font(bsg_font);
   
@@ -678,6 +677,9 @@ void handle_deinit(void) {
   battery_state_service_unsubscribe();
   tick_timer_service_unsubscribe();
   health_service_events_unsubscribe();
+  
+  //Deinit window
+  window_destroy(my_window);
   
   //So say we all!
 }
