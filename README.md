@@ -1,2 +1,3 @@
-# BATTLESTAR_GALACTICA_QUOTES_PEBBLE_FACE
-Work in progress
+# BATTLESTAR GALACTICA QUOTES PEBBLE WATCHFACE
+
+<img src="http://42noticias.com/resources/2.png" />
